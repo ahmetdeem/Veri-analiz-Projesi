@@ -1,5 +1,5 @@
 #include <stdio.h>
-
+#include <stdlib.h>
 /*
  *KİŞİSEL VERİ ANALİZİ PROJESİ
  */
@@ -9,4 +9,4 @@ int main() {
     return 0;
 
 
-}test
+}
