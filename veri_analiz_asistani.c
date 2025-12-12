@@ -54,6 +54,7 @@ void verioku() {
 
 int main() {
 
+
     verioku();
 
     int menusecim;
