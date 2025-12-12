@@ -4,8 +4,58 @@
 /*
  *KİŞİSEL VERİ ANALİZİ PROJESİ
  */
+/*
+ *STRUCT TANIMI
+ */
+    struct Data {
+        char tarih[20];
+        char tur[10];
+        char kategori[20];
+        char aciklama[30];
+        int miktar;
+        double birimFiyat;
+        double toplamTutar;
+        char odemeSekli[20];
+    };
+    struct Data DataDizisi[500];
+    int SatirSayisi = 0 ;
+// verioku fonksiyonunu tanımlıyoruz
+
+void verioku() {
+
+    FILE *datadosyasi;
+    char satir[200];
+
+    datadosyasi = fopen("data.txt", "r");
+    if (datadosyasi == NULL) {
+        printf("Dosya acilamadi!\n");
+        return;
+    }
+
+    // Başlık satırını atla
+    fgets(satir, sizeof(satir), datadosyasi);
+
+    // Satırları oku
+    while (fscanf(datadosyasi, "%s %s %s %s %d %lf %lf %s",
+                  DataDizisi[SatirSayisi].tarih,
+                  DataDizisi[SatirSayisi].tur,
+                  DataDizisi[SatirSayisi].kategori,
+                  DataDizisi[SatirSayisi].aciklama,
+                  &DataDizisi[SatirSayisi].miktar,
+                  &DataDizisi[SatirSayisi].birimFiyat,
+                  &DataDizisi[SatirSayisi].toplamTutar,
+                  DataDizisi[SatirSayisi].odemeSekli) == 8)
+    {
+        SatirSayisi++;
+    }
+
+    fclose(datadosyasi);
+}
 
 int main() {
+
+    verioku();
+
     int menusecim;
     bool durum=true;
     while (durum) {
