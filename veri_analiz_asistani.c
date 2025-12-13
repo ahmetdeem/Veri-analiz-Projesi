@@ -159,6 +159,7 @@
      */
     int TarihiSayiyaCevir(char *tarih) {
     int y, a, g;
+    //sscanf ile string mesajdan gün ay yıl değerlerini çekiyoruz
     sscanf(tarih, "%d-%d-%d", &y, &a, &g);
     return y * 10000 + a * 100 + g;
     }
@@ -263,11 +264,73 @@
 
 
     //gelecek ay tahmini fonksiyonu tanımı menü 5. seçenek
-    void GelecekAyTahmini();
+    void GelecekAyTahmini() {
 
-// verioku fonksiyonunu tanımlıyoruz
+            double ayToplam[13] = {0};
+            int ayGunSayisi[13] = {0};   // Ay içindeki benzersiz gün sayısı
+            char ayGunler[13][40][20];  // 13 ay * 40 gün * tarih stringi
+            int ayGunIndex[13] = {0};   // Her ay için kaç benzersiz gün kaydedildi
 
-void verioku() {
+            // Aylık toplam giderleri ve gün sayılarını hesaplıyoruz
+            for (int i = 0; i < SatirSayisi; i++) {
+
+                if (strcmp(DataDizisi[i].tur, "Gider") != 0)
+                    continue;
+
+                int y, a, g;
+                sscanf(DataDizisi[i].tarih, "%d-%d-%d", &y, &a, &g);
+
+                ayToplam[a] += DataDizisi[i].toplamTutar;
+
+                // Bu gün daha önce eklenmiş mi kontrol et
+                bool var = false;
+                for (int k = 0; k < ayGunIndex[a]; k++) {
+                    if (strcmp(ayGunler[a][k], DataDizisi[i].tarih) == 0) {
+                        var = true;
+                        break;
+                    }
+                }
+
+                if (!var) {
+                    strcpy(ayGunler[a][ayGunIndex[a]], DataDizisi[i].tarih);
+                    ayGunIndex[a]++;
+                }
+            }
+
+            //  Eksik ayları sonucun doğruluğunu şaşırtmaması için hesaplamaya katmıyoruz
+            double toplamGider = 0;
+            int tamAySayisi = 0;
+
+            for (int ay = 1; ay <= 12; ay++) {
+
+                if (ayGunIndex[ay] >= 25) {  // Ay içinde en az 25 farklı gün varsa tam ay kabul
+                    toplamGider += ayToplam[ay];
+                    tamAySayisi++;
+
+                    printf("%d. ay (tam ay) toplam gider: %.2f TL (gün sayisi: %d)\n",
+                           ay, ayToplam[ay], ayGunIndex[ay]);
+                }
+                else if (ayGunIndex[ay] > 0) {
+                    printf("%d. ay eksik → hesaba katilmadi (gun sayisi: %d)\n",
+                           ay, ayGunIndex[ay]);
+                }
+            }
+
+            if (tamAySayisi == 0) {
+                printf("\nHiç tam ay verisi yok, tahmin yapılamıyor!\n");
+                return;
+            }
+
+            //  Son olarak gelecek ayın tahmini giderini hesaplayıp ekrana yazdırıyoruz
+            double ortalama = toplamGider / tamAySayisi;
+
+            printf("Gelecek ay tahmini gider: %.2f TL\n", ortalama);
+        }
+
+
+    // verioku fonksiyonunu tanımlıyoruz
+
+    void verioku() {
 
     FILE *datadosyasi;
     char satir[200];
@@ -300,7 +363,6 @@ void verioku() {
 
 int main() {
 
-
     verioku();
 
     int menusecim;
@@ -311,28 +373,34 @@ int main() {
                      "3 - En az / en çok harcama yapılan günü göster \n "
                      "4 - Eşik değer analizini yap \n "
                      "5 - Gelecek ay ortalama gider tahmini \n 0 - Çıkış \n");
+        printf("Seçiminiz: ");
         scanf("%d", &menusecim);
         switch (menusecim) {
             /* Tümv Veriyi Listele */
             case 1:
-              TumVeriyiListele();
+                TumVeriyiListele();
+                printf("\n");
             break;
              /* Toplama ve günlük ortalama harcamayı göster  */
             case 2:
                 ToplamVeGunlukOrtalama();
-             break;
+                printf("\n");
+            break;
             /* en az ve en çok harcama yapılan günü göster  */
             case 3:
                 GunBazliMinMax();
-             break;
+                printf("\n");
+            break;
             /* eşik değer analizi */
             case 4:
-            EsikDegerAnalizi();
-             break;
+                EsikDegerAnalizi();
+                printf("\n");
+            break;
              /* Gelecek ay gider tahmini */
             case 5:
-            // GelecekAyTahmini();
-                break;
+                GelecekAyTahmini();
+                printf("\n");
+            break;
             case 0:
                 durum=false;
                 break;
@@ -341,10 +409,6 @@ int main() {
 
         }
     }
-
-
-
-
     getchar();
     return 0;
 }
