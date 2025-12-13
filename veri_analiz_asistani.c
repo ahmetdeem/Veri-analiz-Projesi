@@ -27,7 +27,7 @@
             printf("Veri seti okunamadı");
             return;
         }
-        printf("Tarih Tur Kategori Açıklama Miktar BirimFiyat ToplamTutar ÖdemeŞekli");
+        printf("Tarih Tur Kategori Aciklama Miktar BirimFiyat ToplamTutar OdemeSekli \n");
         for(int i = 0; i < SatirSayisi; i++) {
             printf("%s %s %s %s %d %.2f %.2f %s\n",
             DataDizisi[i].tarih,
@@ -146,10 +146,10 @@
         }
 
         // döngü sonunda minIndex en küçük değerim maxIndex en büyük değerim oluyor
-        printf("En az harcama yapilan gün: %s → %.2f TL\n",
+        printf("En az harcama yapilan gun: %s  %.2f TL\n",
                gunler[minIndex], minTutar);
 
-        printf("En cok harcama yapilan gün: %s → %.2f TL\n",
+        printf("En cok harcama yapilan gun: %s  %.2f TL\n",
                gunler[maxIndex], maxTutar);
     }
 
@@ -168,11 +168,11 @@
     void EsikDegerAnalizi() {
         //Kullanıcıya hangi analiz türünü istediği soruyoruz
         int secim;
-        printf("\nEşik Değer Analizi\n");
-        printf("1 - Tarih aralığındaki harcamaları listele\n");
-        printf("2 - Belirli tutardan fazla harcama yapılan günleri listele\n");
-        printf("0 - Geri dön\n");
-        printf("Seçiminiz: ");
+        printf("\nEsik Deger Analizi\n");
+        printf("1 - Tarih araligindaki harcamalari listele\n");
+        printf("2 - Belirli tutardan fazla harcama yapilan gunleri listele\n");
+        printf("0 - Geri don\n");
+        printf("Seciminiz: ");
         scanf("%d", &secim);
 
         // TARİH ARALIĞI ANALİZİ
@@ -214,7 +214,7 @@
         else if (secim == 2) {
 
             double esik;
-            printf("Eşik tutar giriniz: ");
+            printf("Esik tutar giriniz: ");
             scanf("%lf", &esik);
 
             char gunler[200][20];
@@ -252,11 +252,11 @@
             }
 
             // EŞİĞİ GEÇEN GÜNLERİ LİSTELE
-            printf("\n--- %.2f TL ÜZERİNDE HARCIYAPILAN GÜNLER ---\n", esik);
+            printf("\n--- %.2f TL UZERINDE YAPILAN HARCAMALAR ---\n", esik);
 
             for (int j = 0; j < gunSayisi; j++) {
                 if (gunToplam[j] > esik) {
-                    printf("%s → %.2f TL\n", gunler[j], gunToplam[j]);
+                    printf("%s  %.2f TL\n", gunler[j], gunToplam[j]);
                 }
             }
         }
@@ -307,11 +307,11 @@
                     toplamGider += ayToplam[ay];
                     tamAySayisi++;
 
-                    printf("%d. ay (tam ay) toplam gider: %.2f TL (gün sayisi: %d)\n",
+                    printf("%d. ay (tam ay) toplam gider: %.2f TL \n",
                            ay, ayToplam[ay], ayGunIndex[ay]);
                 }
                 else if (ayGunIndex[ay] > 0) {
-                    printf("%d. ay eksik → hesaba katilmadi (gun sayisi: %d)\n",
+                    printf("%d. ay eksik  hesaba katilmadi \n",
                            ay, ayGunIndex[ay]);
                 }
             }
@@ -368,12 +368,14 @@ int main() {
     int menusecim;
     bool durum=true;
     while (durum) {
-        printf("1 - Tüm veriyi listele \n  "
-                     "2 - Toplam ve günlük ortalama harcamayı göster \n "
-                     "3 - En az / en çok harcama yapılan günü göster \n "
-                     "4 - Eşik değer analizini yap \n "
-                     "5 - Gelecek ay ortalama gider tahmini \n 0 - Çıkış \n");
-        printf("Seçiminiz: ");
+        printf("\n VERI ANALIZ ASISTANI \n");
+        printf("  1 - Tum veriyi listele \n  "
+                     "2 - Toplam ve gunluk ortalama harcamayi goster \n "
+                     " 3 - En az / en cok harcama yapilan gunu goster \n "
+                     " 4 - Esik deger analizini yap \n "
+                     " 5 - Gelecek ay ortalama gider tahmini \n "
+                     " 0 - Cikis \n");
+        printf("Seciminiz: ");
         scanf("%d", &menusecim);
         switch (menusecim) {
             /* Tümv Veriyi Listele */
