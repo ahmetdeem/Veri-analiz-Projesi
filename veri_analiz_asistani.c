@@ -19,6 +19,39 @@
     };
     struct Data DataDizisi[500];
     int SatirSayisi = 0 ;
+
+    //Tüm Veriyi listele fonksiyonu tanımı menü 1.seçenek
+    void TumVeriyiListele(){
+        if(SatirSayisi == 0) {
+            printf("Veri seti okunamadı");
+            return;
+        }
+        printf("Tarih Tur Kategori Açıklama Miktar BirimFiyat ToplamTutar ÖdemeŞekli");
+        for(int i = 0; i < SatirSayisi; i++) {
+            printf("%s %s %s %s %d %.2f %.2f %s\n",
+            DataDizisi[i].tarih,
+            DataDizisi[i].tur,
+            DataDizisi[i].kategori,
+            DataDizisi[i].aciklama,
+            DataDizisi[i].miktar,
+            DataDizisi[i].birimFiyat,
+            DataDizisi[i].toplamTutar,
+            DataDizisi[i].odemeSekli);
+        }
+    }
+
+    //Toplamve günlük ortalama fonksiyonu tanımı menü 2. seçenek
+    void ToplamVeGunlukOrtalama();
+
+    //gün bazlı min max fonksiyonu tanımı menü 3. seçenek
+    void GunBazliMinMax();
+
+    // eşik değer analizi fonksiyonu menü 4. seçenek
+    void EsikDegerAnalizi();
+
+    //gelecek ay tahmini fonksiyonu tanımı menü 5. seçenek
+    void GelecekAyTahmini();
+
 // verioku fonksiyonunu tanımlıyoruz
 
 void verioku() {
@@ -69,23 +102,23 @@ int main() {
         switch (menusecim) {
             /* Tümv Veriyi Listele */
             case 1:
-                printf("a \n");
+              TumVeriyiListele();
                 break;
                 /* Toplama ve günlük ortalama harcamayı göster  */
             case 2:
-                printf("b \n");
+              //ToplamVeGunlukOrtalama();
                 break;
                 /* en az ve en çok harcama yapılan günü göster  */
             case 3:
-                printf("c \n");
+            //  GunBazliMinMax();
                 break;
                 /* eşik değer analizi */
             case 4:
-                printf("d \n");
+           //  EsikDegerAnalizi();
                 break;
                 /* Gelecek ay gider tahmini */
             case 5:
-                printf("e \n");
+            // GelecekAyTahmini();
                 break;
             case 0:
                 durum=false;
