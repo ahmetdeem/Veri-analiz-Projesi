@@ -41,6 +41,7 @@
         }
     }
 
+
     //Toplam ve günlük ortalama fonksiyonu tanımı menü 2. seçenek
     void ToplamVeGunlukOrtalama() {
         double toplamGider = 0 ;
