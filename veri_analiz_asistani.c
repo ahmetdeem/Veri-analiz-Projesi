@@ -64,7 +64,7 @@
                 }
             }
 
-            // eklenmediyse yeni tariholarak kaydediyoruz
+            // eklenmediyse yeni tarih olarak kaydediyoruz
             if (!bulundu) {
                 strcpy(gunler[gunSayisi], DataDizisi[i].tarih);
                 gunSayisi++;
@@ -84,7 +84,74 @@
     }
 
     //gün bazlı min max fonksiyonu tanımı menü 3. seçenek
-    void GunBazliMinMax();
+void GunBazliMinMax() {
+
+        char gunler[200][20];
+        double gunToplam[200];
+        int gunSayisi = 0;
+        //toplamları sfıra eşitliyoruz
+        for (int i = 0; i < 200; i++)
+            gunToplam[i] = 0;
+
+        // TÜM SATIRLARI GEZ
+        for (int i = 0; i < SatirSayisi; i++) {
+
+            // strcmp aracılığıyla string değerleri kıyaslayıp sadece türü gider olanları işleme alıyoruz
+            if (strcmp(DataDizisi[i].tur, "Gider") != 0)
+                continue;
+
+            bool bulundu = false;
+            int index = -1;
+
+            // Tarihin önceden listeye eklenip eklenmediğini kontrol ediyorum
+            for (int j = 0; j < gunSayisi; j++) {
+                if (strcmp(gunler[j], DataDizisi[i].tarih) == 0) {
+                    bulundu = true;
+                    index = j;
+                    break;
+                }
+            }
+
+            // Eğer tarih önceden listeye eklenmediyse ekliyorum
+            if (!bulundu) {
+                strcpy(gunler[gunSayisi], DataDizisi[i].tarih);
+                gunToplam[gunSayisi] = DataDizisi[i].toplamTutar;
+                gunSayisi++;
+            }
+
+            //tarih listede varsa eğer o tarihteki toplam gideri güncelliyorum
+            else {
+                gunToplam[index] += DataDizisi[i].toplamTutar;
+            }
+        }
+
+        // Minimum ve maksimum değerlerine geçici olarak atama yapıyorum
+        double minTutar = gunToplam[0];
+        double maxTutar = gunToplam[0];
+        int minIndex = 0;
+        int maxIndex = 0;
+
+        //Toplam değerleri karşılaştırıyorum
+        for (int j = 1; j < gunSayisi; j++) {
+
+            if (gunToplam[j] < minTutar) {
+                minTutar = gunToplam[j];
+                minIndex = j;
+            }
+
+            if (gunToplam[j] > maxTutar) {
+                maxTutar = gunToplam[j];
+                maxIndex = j;
+            }
+        }
+
+        // döngü sonunda minIndex en küçük değerim maxIndex en büyük değerim oluyor
+        printf("En az harcama yapilan gün: %s → %.2f TL\n",
+               gunler[minIndex], minTutar);
+
+        printf("En cok harcama yapilan gün: %s → %.2f TL\n",
+               gunler[maxIndex], maxTutar);
+    }
 
     // eşik değer analizi fonksiyonu menü 4. seçenek
     void EsikDegerAnalizi();
@@ -143,20 +210,20 @@ int main() {
             /* Tümv Veriyi Listele */
             case 1:
               TumVeriyiListele();
-                break;
-                /* Toplama ve günlük ortalama harcamayı göster  */
+            break;
+             /* Toplama ve günlük ortalama harcamayı göster  */
             case 2:
                 ToplamVeGunlukOrtalama();
-                break;
-                /* en az ve en çok harcama yapılan günü göster  */
+             break;
+            /* en az ve en çok harcama yapılan günü göster  */
             case 3:
-            //  GunBazliMinMax();
-                break;
-                /* eşik değer analizi */
+                GunBazliMinMax();
+             break;
+            /* eşik değer analizi */
             case 4:
-           //  EsikDegerAnalizi();
-                break;
-                /* Gelecek ay gider tahmini */
+             //  EsikDegerAnalizi();
+             break;
+             /* Gelecek ay gider tahmini */
             case 5:
             // GelecekAyTahmini();
                 break;
