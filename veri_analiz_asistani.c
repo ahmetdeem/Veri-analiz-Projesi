@@ -316,6 +316,7 @@
                 }
             }
 
+
             if (tamAySayisi == 0) {
                 printf("\nHiç tam ay verisi yok, tahmin yapılamıyor!\n");
                 return;
