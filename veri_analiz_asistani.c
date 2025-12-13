@@ -84,7 +84,7 @@
     }
 
     //gün bazlı min max fonksiyonu tanımı menü 3. seçenek
-void GunBazliMinMax() {
+    void GunBazliMinMax() {
 
         char gunler[200][20];
         double gunToplam[200];
@@ -154,7 +154,113 @@ void GunBazliMinMax() {
     }
 
     // eşik değer analizi fonksiyonu menü 4. seçenek
-    void EsikDegerAnalizi();
+    /*
+     *TARİH KIYASLAMASI YAPABİLMEK İÇİN TARİH DEĞERİMİZİ SAYIYA ÇEVİREN BİR FONKSİYON YAZIYORUZ
+     */
+    int TarihiSayiyaCevir(char *tarih) {
+    int y, a, g;
+    sscanf(tarih, "%d-%d-%d", &y, &a, &g);
+    return y * 10000 + a * 100 + g;
+    }
+
+
+    void EsikDegerAnalizi() {
+        //Kullanıcıya hangi analiz türünü istediği soruyoruz
+        int secim;
+        printf("\nEşik Değer Analizi\n");
+        printf("1 - Tarih aralığındaki harcamaları listele\n");
+        printf("2 - Belirli tutardan fazla harcama yapılan günleri listele\n");
+        printf("0 - Geri dön\n");
+        printf("Seçiminiz: ");
+        scanf("%d", &secim);
+
+        // TARİH ARALIĞI ANALİZİ
+        if (secim == 1) {
+
+            char baslangic[20], bitis[20];
+            printf("Baslangic tarihi (YYYY-AA-GG): ");
+            scanf("%s", baslangic);
+            printf("Bitis tarihi (YYYY-AA-GG): ");
+            scanf("%s", bitis);
+
+            int bas = TarihiSayiyaCevir(baslangic);
+            int bit = TarihiSayiyaCevir(bitis);
+
+            printf("\n--- Tarih Araligindaki Harcamalar ---\n");
+
+            for (int i = 0; i < SatirSayisi; i++) {
+
+                if (strcmp(DataDizisi[i].tur, "Gider") != 0)
+                    continue;
+
+                int t = TarihiSayiyaCevir(DataDizisi[i].tarih);
+
+                if (t >= bas && t <= bit) {
+                    printf("%s %s %s %s %d %.2f %.2f %s\n",
+                           DataDizisi[i].tarih,
+                           DataDizisi[i].tur,
+                           DataDizisi[i].kategori,
+                           DataDizisi[i].aciklama,
+                           DataDizisi[i].miktar,
+                           DataDizisi[i].birimFiyat,
+                           DataDizisi[i].toplamTutar,
+                           DataDizisi[i].odemeSekli);
+                }
+            }
+        }
+
+        // EŞİK TUTAR ANALİZİ
+        else if (secim == 2) {
+
+            double esik;
+            printf("Eşik tutar giriniz: ");
+            scanf("%lf", &esik);
+
+            char gunler[200][20];
+            double gunToplam[200];
+            int gunSayisi = 0;
+
+            for (int i = 0; i < 200; i++)
+                gunToplam[i] = 0;
+
+            // Gün bazlı toplamları hesapla
+            for (int i = 0; i < SatirSayisi; i++) {
+
+                if (strcmp(DataDizisi[i].tur, "Gider") != 0)
+                    continue;
+
+                bool bulundu = false;
+                int index = -1;
+
+                for (int j = 0; j < gunSayisi; j++) {
+                    if (strcmp(gunler[j], DataDizisi[i].tarih) == 0) {
+                        bulundu = true;
+                        index = j;
+                        break;
+                    }
+                }
+
+                if (!bulundu) {
+                    strcpy(gunler[gunSayisi], DataDizisi[i].tarih);
+                    gunToplam[gunSayisi] = DataDizisi[i].toplamTutar;
+                    gunSayisi++;
+                }
+                else {
+                    gunToplam[index] += DataDizisi[i].toplamTutar;
+                }
+            }
+
+            // EŞİĞİ GEÇEN GÜNLERİ LİSTELE
+            printf("\n--- %.2f TL ÜZERİNDE HARCIYAPILAN GÜNLER ---\n", esik);
+
+            for (int j = 0; j < gunSayisi; j++) {
+                if (gunToplam[j] > esik) {
+                    printf("%s → %.2f TL\n", gunler[j], gunToplam[j]);
+                }
+            }
+        }
+    }
+
 
     //gelecek ay tahmini fonksiyonu tanımı menü 5. seçenek
     void GelecekAyTahmini();
@@ -221,7 +327,7 @@ int main() {
              break;
             /* eşik değer analizi */
             case 4:
-             //  EsikDegerAnalizi();
+            EsikDegerAnalizi();
              break;
              /* Gelecek ay gider tahmini */
             case 5:
