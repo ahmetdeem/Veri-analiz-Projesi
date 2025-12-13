@@ -1,5 +1,6 @@
 #include <stdbool.h>
 #include <stdio.h>
+#include <string.h>
 #include <stdlib.h>
 /*
  *KİŞİSEL VERİ ANALİZİ PROJESİ
@@ -40,8 +41,46 @@
         }
     }
 
-    //Toplamve günlük ortalama fonksiyonu tanımı menü 2. seçenek
-    void ToplamVeGunlukOrtalama();
+    //Toplam ve günlük ortalama fonksiyonu tanımı menü 2. seçenek
+    void ToplamVeGunlukOrtalama() {
+        double toplamGider = 0 ;
+        for(int i = 0; i < SatirSayisi; i++) {
+            if (strcmp(DataDizisi[i].tur,"Gider") ==0) {
+                toplamGider += DataDizisi[i].toplamTutar;
+            }
+        }
+        char gunler[200][20] ;
+        int gunSayisi = 0;
+        bool bulundu = false;
+
+        for (int i = 0; i < SatirSayisi; i++) {
+
+            // tarih daha önce eklenmiş mi kontrol ediyoruz
+            for (int j = 0; j < gunSayisi; j++) {
+                if (strcmp(gunler[j], DataDizisi[i].tarih) == 0) {
+                    bulundu = true;
+                    break;
+                }
+            }
+
+            // eklenmediyse yeni tariholarak kaydediyoruz
+            if (!bulundu) {
+                strcpy(gunler[gunSayisi], DataDizisi[i].tarih);
+                gunSayisi++;
+            }
+
+            bulundu = false;
+        }
+        //Günlük Ortalama gideri tanımlıyoruz burda
+        double gunlukOrtalama = toplamGider / gunSayisi;
+
+        //İstenen değerleri ekrana yazdırıyoruz
+        printf("Toplam gider: %.2f TL\n", toplamGider);
+        printf("Toplam gun sayisi: %d\n", gunSayisi);
+        printf("Gunluk ortalama gider: %.2f TL\n", gunlukOrtalama);
+        printf("\n");
+
+    }
 
     //gün bazlı min max fonksiyonu tanımı menü 3. seçenek
     void GunBazliMinMax();
@@ -106,7 +145,7 @@ int main() {
                 break;
                 /* Toplama ve günlük ortalama harcamayı göster  */
             case 2:
-              //ToplamVeGunlukOrtalama();
+                ToplamVeGunlukOrtalama();
                 break;
                 /* en az ve en çok harcama yapılan günü göster  */
             case 3:
