@@ -153,7 +153,7 @@
                gunler[maxIndex], maxTutar);
     }
 
-    // eşik değer analizi fonksiyonu menü 4. seçenek
+
     /*
      *TARİH KIYASLAMASI YAPABİLMEK İÇİN TARİH DEĞERİMİZİ SAYIYA ÇEVİREN BİR FONKSİYON YAZIYORUZ
      */
@@ -164,7 +164,7 @@
     return y * 10000 + a * 100 + g;
     }
 
-
+    // eşik değer analizi fonksiyonu menü 4. seçenek
     void EsikDegerAnalizi() {
         //Kullanıcıya hangi analiz türünü istediği soruyoruz
         int secim;
@@ -259,6 +259,8 @@
                     printf("%s  %.2f TL\n", gunler[j], gunToplam[j]);
                 }
             }
+        }else if (secim != 1 && secim != 2 && secim != 0) {
+            printf("Gecersiz bir sayi girdiniz.");
         }
     }
 
@@ -380,26 +382,31 @@ int main() {
         switch (menusecim) {
             /* Tümv Veriyi Listele */
             case 1:
+                printf("\n");
                 TumVeriyiListele();
                 printf("\n");
             break;
              /* Toplama ve günlük ortalama harcamayı göster  */
             case 2:
+                printf("\n");
                 ToplamVeGunlukOrtalama();
                 printf("\n");
             break;
             /* en az ve en çok harcama yapılan günü göster  */
             case 3:
+                printf("\n");
                 GunBazliMinMax();
                 printf("\n");
             break;
             /* eşik değer analizi */
             case 4:
+                printf("\n");
                 EsikDegerAnalizi();
                 printf("\n");
             break;
              /* Gelecek ay gider tahmini */
             case 5:
+                printf("\n");
                 GelecekAyTahmini();
                 printf("\n");
             break;
